@@ -1,1 +1,32 @@
 A simple jQuery plugin to toogle hidden div contents.
+
+Implementation:
+<div class="ClassName">
+  <ul>
+  <li><a href="#">link</a></li>
+  <li><a href="#">link2</a></li>
+  <li><a href="#">link3</a></li>
+  </ul>
+</div>
+
+  Content divs structure:
+<div class="sliderDiv-0">
+  Content
+</div>
+<div class="sliderDiv-1">
+  Content
+</div>
+<div class="sliderDiv-2">
+  Content
+</div>
+
+  JavaScript implementation
+  $(".ClassName").slideDivs({
+     'up'         :  10,   //Type ["slow","fast"] or time after to hide content
+     'down'       : 'slow',   //Type or time after content slide
+     'class'      : 'sliderDiv', //Div content class name
+     'first'      : 'true' //Are the first content div should be show after script initialization
+  });
+
+  Short JavaScript implementation
+  $(".ClassName").slideDivs();
