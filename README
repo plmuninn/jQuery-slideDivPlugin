@@ -28,11 +28,11 @@ Implementation:
 
   JavaScript implementation
   $(".ClassName").slideDivs({
-     'up'         :  10,            //Type ["slow","fast"] or time after to hide content
-     'down'       : 'slow',         //Type or time after content slide
-     'class'      : 'sliderDiv',    //Div content class name
-     'first'      : 'true',         //Are the first content div should be show after script initialization
-     'doubleClick': 'false'         //If you want to make second click of link to hide actual content for this link
+     'up'         :  10,        //Type ["slow","fast"] or time after to hide content
+     'down'       : 'slow',     //Type or time after content slide
+     'class'      : 'sliderDiv',//Div content class name
+     'first'      : 'true',     //Are the first content div should be show after script initialization
+     'doubleClick': 'false'     //If you want to make second click of link to hide actual content for this link
   });
 
   Short JavaScript implementation
