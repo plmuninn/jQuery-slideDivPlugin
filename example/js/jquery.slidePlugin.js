@@ -32,7 +32,8 @@
  *    'up'         :  10,   //Sposób chowania się, niski czas daje efekt znikania
  *    'down'       : 'slow',   //Sposób pojawiania się
  *    'class'      : 'sliderDiv', //Klasa divów do pojawiania się
- *    'first'      : 'true' //Czy ma być wywołany pierwszy element po inicjalizacji
+ *    'first'      : 'true', //Czy ma być wywołany pierwszy element po inicjalizacji
+ *    'doubleClick': 'false' //Czy ma być wyłączane menu kliknięciem w ten sam link
  * });
  *
  * Struktrua JavaScript skrócona
@@ -48,20 +49,31 @@
 
     var methods = {
         init : function( options ) {
+
+            /*Mergujemy tablicę z danymi*/
             settings  = $.extend( {
                 'up'         :  10,
                 'down'       : 'slow',
                 'class'      : 'sliderDiv',
-                'first'      : 'false'
+                'first'      : 'false',
+                'doubleClick': 'false'
             }, options);
 
-            /*Pobieramy wszystkie divy*/
-            divs = $("div[class^='"+settings['class']+"']");
+           /*Pobieramy danę i zapisujemy do aktualnej instancji obiektu*/
+           var $dataBinder = $(this).data({
+               "up": settings["up"],
+               "down": settings["down"],
+               "class": settings["class"],
+               "first" : settings["first"],
+               "divs" : $("div[class^='"+ settings["class"]+"']"),
+               "doubleClick": settings["doubleClick"]
+           });
 
-            methods['hideAll'].apply(null);
+             /*Wywołujemy schowanie wszystkich na początku*/
+             methods['hideAll'].apply(null, new Array(null, $dataBinder));
 
             /*Ściągamy wszysto z wyliczenia*/
-          li = this.find("li").click(function(event){
+          li = $(this).find("li").click(function(event){
               /*Blokujemy wykonanie linku*/
               event.preventDefault();
               /*Przesłaniamy obiekt*/
@@ -69,31 +81,41 @@
               /*Pobieramy index*/
               var liIndex = $this.index();
               /*Generujamy obiekt poszukiwanego diva*/
-              var div = $("."+settings['class']+'-'+liIndex);
+              var div = $("."+ $dataBinder.data('class')+'-'+liIndex);
               /*Chowamy aktywne jeżeli są, przekazujemy w parametrze obiekt*/
-                /*new Array(), sztuczka aby na IE działało*/
-              methods['hideAll'].apply(null,new Array(div));
+              methods['hideAll'].apply(null,new Array(div, $dataBinder));
                /*Sprawdzamy czy już nie jest schowane*/
-                 div.slideDown(settings['down']);
+                 if(div.is(":hidden")){
+                 div.slideDown($dataBinder.data('down'));}
               /*Aby strona nie "skakała"*/
               return false;
           });
                 /*Wyświetlamy pierwszy jeżeli mamy True*/
-              if(settings["first"] === "true"){
-                  $("."+settings['class']+'-0').slideDown(settings['down']);
+              if($dataBinder.data("first") === "true"){
+                  $("."+$dataBinder.data('class')+'-0').slideDown($dataBinder.data('down'));
               }
 
             return false;
         },
-        hideAll : function (actual){
+        hideAll : function (){
             /*Pobieramy parametr z divem*/
-            var actual = $(actual);
+            var actual = $(arguments[0]);
+            var $data =  $(arguments[1]);
              /*Listujemy wszystkie divy*/
-            divs.each(function(){
+            $data.data("divs").each(function(){
                 var $this = $(this);
                 /*Jeżeli jest widoczny i różny od tego co kliknęliśmy to chowamy*/
-                if($this.is(':visible') && !($this[0] == actual[0])){
-                   $this.slideUp(settings["up"]);
+                if($this.is(':visible')){
+                    /*Jeżeli nie jest wywoływane na początku i nie ma ustawionego podwójnego kliknięcia*/
+                    if($data.data("doubleClick") === "false" && actual[0] != null){
+                       /*Jeżeli ma to sprawdzamy różnice obiektów*/
+                        if($this[0] != actual[0]){
+                   $this.slideUp($data.data("up"));
+                        }
+                    }
+                    else{
+                    $this.slideUp($data.data("up"));
+                    }
                 }
             });
             return false;
