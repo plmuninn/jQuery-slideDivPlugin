@@ -73,13 +73,13 @@
              methods['hideAll'].apply(null, new Array(null, $dataBinder));
 
             /*Ściągamy wszysto z wyliczenia*/
-          li = $(this).children('ul').find("li").click(function(event){
+          li = $(this).children('ul').find("li a").click(function(event){
               /*Blokujemy wykonanie linku*/
               event.preventDefault();
               /*Przesłaniamy obiekt*/
               var $this = $(this);
               /*Pobieramy index*/
-              var liIndex = $this.index();
+              var liIndex = $this.parent().index();
               /*Generujamy obiekt poszukiwanego diva*/
               var div = $("."+ $dataBinder.data('class')+'-'+liIndex);
               /*Chowamy aktywne jeżeli są, przekazujemy w parametrze obiekt*/
