@@ -73,7 +73,7 @@
             methods['hideAll'].apply(null, new Array(null, $dataBinder));
 
             /*Ściągamy wszysto z wyliczenia*/
-            li = $(this).find("li").click(function(event){
+            li = $(this).children('ul').find("li").click(function(event){
                 /*Blokujemy wykonanie linku*/
                 event.preventDefault();
                 /*Przesłaniamy obiekt*/
