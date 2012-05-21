@@ -8,15 +8,15 @@ A simple jQuery plugin to toogle hidden div contents.
       <li><a href="#">link2</a></li>
       <li><a href="#">link3</a></li>
       </ul>
-            <div class="sliderDiv-0">
-              Content
-            </div>
-            <div class="sliderDiv-1">
-              Content
-            </div>
-            <div class="sliderDiv-2">
-              Content
-            </div>
+      <div class="sliderDiv-0">
+       Content
+       </div>
+       <div class="sliderDiv-1">
+       Content
+       </div>
+       <div class="sliderDiv-2">
+       Content
+       </div>
 </div>
 </code>
 </pre>
