@@ -1,6 +1,7 @@
 A simple jQuery plugin to toogle hidden div contents.
 
 <h1>Html Implementation:</h1>
+<hr />
 <pre>
 <code>
 <div class="ClassName">
