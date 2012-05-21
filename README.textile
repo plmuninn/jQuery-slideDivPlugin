@@ -1,7 +1,8 @@
 A simple jQuery plugin to toogle hidden div contents.
 
 <h1>Html Implementation:</h1>
-bc.
+<pre>
+<code>
 <div class="ClassName">
       <ul>
       <li><a href="#">link</a></li>
@@ -19,9 +20,12 @@ bc.
               Content
             </div>
 </div>
+</code>
+</pre>
 
-h1.JavaScript full implementation
-bc.
+<h1>JavaScript full implementation</h1>
+<pre>
+<code>
   $(".ClassName").slideDivs({
      'up'         :  10,        //Type ["slow","fast"] or time after to hide content
      'down'       : 'slow',     //Type or time after content show
@@ -32,7 +36,11 @@ bc.
      'auto'       :  false,     //If content should hide automatic
      'autoTime'   :  5000       //Time to hide after click
   });
-
-h1.Short JavaScript implementation
-bc.
+ </code>
+ </pre>
+<h1>Short JavaScript implementation</h1>
+ <pre>
+ <code>
   $(".ClassName").slideDivs();
+ </code>
+ </pre>
