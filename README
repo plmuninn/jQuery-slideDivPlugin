@@ -1,39 +1,38 @@
-To Do:
-
--Add time hiding
--Add child hiding
-
-
 A simple jQuery plugin to toogle hidden div contents.
 
-Implementation:
+h1.Html Implementation:
+bc.
 <div class="ClassName">
-  <ul>
-  <li><a href="#">link</a></li>
-  <li><a href="#">link2</a></li>
-  <li><a href="#">link3</a></li>
-  </ul>
+      <ul>
+      <li><a href="#">link</a></li>
+      <li><a href="#">link2</a></li>
+      <li><a href="#">link3</a></li>
+      </ul>
+            <!--Content divs structure:-->
+            <div class="sliderDiv-0">
+              Content
+            </div>
+            <div class="sliderDiv-1">
+              Content
+            </div>
+            <div class="sliderDiv-2">
+              Content
+            </div>
 </div>
 
-  Content divs structure:
-<div class="sliderDiv-0">
-  Content
-</div>
-<div class="sliderDiv-1">
-  Content
-</div>
-<div class="sliderDiv-2">
-  Content
-</div>
-
-  JavaScript implementation
+h1.JavaScript full implementation
+bc.
   $(".ClassName").slideDivs({
      'up'         :  10,        //Type ["slow","fast"] or time after to hide content
-     'down'       : 'slow',     //Type or time after content slide
+     'down'       : 'slow',     //Type or time after content show
      'class'      : 'sliderDiv',//Div content class name
-     'first'      : 'true',     //Are the first content div should be show after script initialization
-     'doubleClick': 'false'     //If you want to make second click of link to hide actual content for this link
+     'first'      :  true,      //Are the first content div should be show after script initialization
+     'doubleClick':  false,     //If you want to make second click of link to hide actual content for this link
+     'hideChild'  :  false,     //If you want to hide child slideDivs implementation (IMPORTANT)Give this on parents not on children!
+     'auto'       :  false,     //If content should hide automatic
+     'autoTime'   :  5000       //Time to hide after click
   });
 
-  Short JavaScript implementation
+h1.Short JavaScript implementation
+bc.
   $(".ClassName").slideDivs();
