@@ -11,8 +11,7 @@
 
             $(".menu-class").slideDivs({
                   'first': true,
-                  'hideChild'   : true,
-                  'auto' : true
+                  'hideChild'   : true
              });
 
              $(".second").slideDivs({
@@ -22,8 +21,7 @@
              });
 
             $(".slideDiv-0").slideDivs({
-                'class' : 'third',
-                'hideChild'   : true
+                'class' : 'third'
             });
 
             $(".third-0").slideDivs({
@@ -41,28 +39,28 @@
           <li><a href="#">Third</a></li>
       </ul>
       <div class="sliderDiv-0">
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin dictum faucibus dapibus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam pretium accumsan consectetur. Morbi et tellus porttitor risus pulvinar suscipit. Phasellus et fringilla leo. Donec et neque eu nibh malesuada elementum. Donec scelerisque eros a arcu ultrices a interdum justo vulputate. Nunc faucibus viverra tempus.</p>
+          <p>I can be seen because i have <strong>first : true</strong></p>
           <div class="second">
               <ul>
-                  <li><a href="#">First</a></li>
-                  <li><a href="#">Second</a></li>
+                  <li><a href="#">Second menu | First Link | I can be clicked twice! I have <strong>doubleClick : true</strong></a></li>
+                  <li><a href="#">Second menu | Second Link | I can be clicked twice! I have <strong>doubleClick : true</strong></a></li>
               </ul>
 
               <div class="slideDiv-0">
                       <ul>
-                          <li><a href="#">First</a></li>
-                          <li><a href="#">Second</a></li>
+                          <li><a href="#">Third Menu | First Link | My parent hide our childrens! He have <strong>hideChild   : true</strong></a></li>
+                          <li><a href="#">Third Menu | Second Link | My parent hide our childrens! He have <strong>hideChild   : true</strong></a></li>
                       </ul>
                       <div class="third-0">
                           <ul>
-                              <li><a href="#">First</a></li>
-                              <li><a href="#">Second</a></li>
+                              <li><a href="#">Fourth Menu | First Link </a></li>
+                              <li><a href="#">Fourth Menu | Second Link</a></li>
                           </ul>
                           <div class="fourth-0">
-                              Third first
+                              Fourth first
                           </div>
                           <div class="fourth-1">
-                              Third second
+                              Fourth second
                           </div>
                       </div>
                       <div class="third-1">
