@@ -23,6 +23,14 @@ A simple jQuery plugin to toogle hidden div contents.
 </code>
 </pre>
 
+<h1>Short JavaScript implementation</h1>
+ <pre>
+ <code>
+  $(".ClassName").slideDivs();
+ </code>
+ </pre>
+
+
 <h1>JavaScript full implementation</h1>
 <pre>
 <code>
@@ -36,11 +44,5 @@ A simple jQuery plugin to toogle hidden div contents.
      'auto'       :  false,     //If content should hide automatic
      'autoTime'   :  5000       //Time to hide after click
   });
- </code>
- </pre>
-<h1>Short JavaScript implementation</h1>
- <pre>
- <code>
-  $(".ClassName").slideDivs();
  </code>
  </pre>
