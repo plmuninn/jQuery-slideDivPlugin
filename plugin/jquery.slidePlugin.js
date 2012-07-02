@@ -30,14 +30,18 @@
  *
  * Struktrua JavaScript rozszerzona
  * $(".Klasa").slideDivs({
- *    'up'         :  10,         //Sposób chowania się, niski czas daje efekt znikania
- *    'down'       : 'slow',      //Sposób pojawiania się
- *    'class'      : 'sliderDiv', //Klasa divów do pojawiania się
- *    'first'      : true,        //Czy ma być wywołany pierwszy element po inicjalizacji
- *    'doubleClick': false,       //Czy ma być wyłączane menu kliknięciem w ten sam link
- *    'hideChild'  : false,       //Czy mają się chować podrzędne wywołania
- *    'auto'       : false,       //Czy div ma się chować automatycznie
- *    'autoTime'   : 5000         //Po jakim czasie ma się schować po kliknięciu
+ *    'up'              :  10,         //Sposób chowania się, niski czas daje efekt znikania
+ *    'down'            : 'slow',      //Sposób pojawiania się
+ *    'class'           : 'sliderDiv', //Klasa divów do pojawiania się
+ *    'first'           : true,        //Czy ma być wywołany pierwszy element po inicjalizacji
+ *    'doubleClick'     : false,       //Czy ma być wyłączane menu kliknięciem w ten sam link
+ *    'hideChild'       : false,       //Czy mają się chować podrzędne wywołania
+ *    'auto'            : false,       //Czy div ma się chować automatycznie
+ *    'autoTime'        : 5000         //Po jakim czasie ma się schować po kliknięciu
+ *    'initFunction'    : 'click',     //Zdarzenie które ma rozpocząć aktywację funkcji pokazywania
+ *    'startFunction'   : 'slideDown', //Efekt pokazywania
+ *    'endFunction'     : 'slideUp',   //Efekt chowania
+ *    'hideFunction'    : 'hide'       //Efekt automatycznego chowania
  * });
  *
  * Struktrua JavaScript skrócona
@@ -56,14 +60,18 @@
 
             /*Mergujemy tablicę z danymi*/
             settings  = $.extend( {
-                'up'         :  10,
-                'down'       : 'slow',
-                'class'      : 'sliderDiv',
-                'first'      : false,
-                'doubleClick': false,
-                'hideChild'  : false,
-                'auto'       : false,
-                'autoTime'   : 5000
+                'up'            :  10,
+                'down'          : 'slow',
+                'class'         : 'sliderDiv',
+                'first'         : false,
+                'doubleClick'   : false,
+                'hideChild'     : false,
+                'auto'          : false,
+                'autoTime'      : 5000,
+                'initFunction'  : 'click',
+                'startFunction' : 'slideDown',
+                'endFunction'   : 'slideUp',
+                'hideFunction'  : 'hide'
             }, options);
 
 
@@ -72,15 +80,19 @@
 
             /*Pobieramy danę i zapisujemy do aktualnej instancji obiektu*/
             var $dataBinder = $(this).data({
-                "up": settings["up"],
-                "down": settings["down"],
-                "class": settings["class"],
-                "first" : settings["first"],
-                "divs" : $("div[class^='"+ settings["class"]+"']"),
-                "doubleClick": settings["doubleClick"],
-                "hideChild": settings["hideChild"],
-                "auto": settings["auto"],
-                "autoTime": settings["autoTime"]
+                "up"            : settings["up"],
+                "down"          : settings["down"],
+                "class"         : settings["class"],
+                "first"         : settings["first"],
+                "divs"          : $("div[class*='"+ settings["class"]+"']"),
+                "doubleClick"   : settings["doubleClick"],
+                "hideChild"     : settings["hideChild"],
+                "auto"          : settings["auto"],
+                "autoTime"      : settings["autoTime"],
+                "initFunction"  : settings["initFunction"],
+                "startFunction" : settings["startFunction"],
+                "endFunction"   : settings["endFunction"],
+                "hideFunction"  : settings["hideFunction"]
             });
 
             /*Wywołujemy schowanie wszystkich na początku*/
@@ -88,7 +100,7 @@
 
 
             /*Ściągamy wszysto z wyliczenia*/
-            li = $(this).children('ul').find("li a").click(function(event){
+            li = $(this).children('ul').find("li a")[$dataBinder.data('initFunction')](function(event){
                 /*Blokujemy wykonanie linku*/
                 event.preventDefault();
                 /*Przesłaniamy obiekt*/
@@ -101,17 +113,17 @@
                 methods['hideAll'].apply(null,new Array(div, $dataBinder));
                 /*Sprawdzamy czy już nie jest schowane*/
                 if(div.is(":hidden")){
-                    div.slideDown($dataBinder.data('down'));
+                    div[$dataBinder.data('startFunction')]($dataBinder.data('down'));
                     /*Jeżeli mama auto chowanie się*/
                     if($dataBinder.data("auto"))
-                        div.delay($dataBinder.data('autoTime')).hide($dataBinder.data("up"));
+                        div.delay($dataBinder.data('autoTime'))[$dataBinder.data('hideFunction')]($dataBinder.data("up"));
                 }
                 /*Aby strona nie "skakała"*/
                 return false;
             });
             /*Wyświetlamy pierwszy jeżeli mamy True*/
             if($dataBinder.data("first")){
-                $("."+$dataBinder.data('class')+'-0').slideDown($dataBinder.data('down'));
+                $("."+$dataBinder.data('class')+'-0')[$dataBinder.data('endFunction')]($dataBinder.data('down'));
             }
 
             return false;
@@ -135,15 +147,17 @@
                     if(!$data.data("doubleClick") && actual[0] != null){
                         /*Jeżeli ma to sprawdzamy różnice obiektów*/
                         if($this[0] != actual[0]){
-                            $this.slideUp($data.data("up"));
+                            $this[$data.data('endFunction')]($data.data("up"));
                         }
                     }
                     else{
-                        $this.slideUp($data.data("up"));
+                        $this[$data.data('endFunction')]($data.data("up"));
                     }
                 }
             });
             return false;
+        },
+        initAjax: function(){ //TODO: Ajax implementation
         }
     };
 
