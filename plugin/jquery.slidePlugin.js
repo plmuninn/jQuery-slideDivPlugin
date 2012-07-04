@@ -295,7 +295,6 @@
                     ajaxValues[0].ajaxFunction.call(this,ajaxValues, actual, $this);
                 }
             }
-
         }
     };
 
