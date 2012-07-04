@@ -1,4 +1,5 @@
 A simple jQuery plugin to toogle hidden div contents.
+TODO: callback functions implementation
 
 <h1>Html Implementation:</h1>
 <pre>
