@@ -54,12 +54,13 @@
     var settings;
     var divs;
     var li;
+    var ajaxValues;
 
     var methods = {
         init : function( options ) {
 
             /*Mergujemy tablicę z danymi*/
-            settings  = $.extend( {
+            settings  = $.extend( true, {
                 'up'            :  10,
                 'down'          : 'slow',
                 'class'         : 'sliderDiv',
@@ -71,7 +72,17 @@
                 'initFunction'  : 'click',
                 'startFunction' : 'slideDown',
                 'endFunction'   : 'slideUp',
-                'hideFunction'  : 'hide'
+                'hideFunction'  : 'hide',
+                'ajaxValues'    : {
+                    'enabled'           : false,
+                    'type'              : null,
+                    'loadingImageSrc'   : 'img/ajax-loader.gif',
+                    'loadText'          : 'Loading',
+                    'ajaxLang'          : 'php',
+                    'ajaxLangV'         : 5,
+                    'ajaxReturn'        : 'html',
+                    'ajaxFunction'      : function(){}
+                }
             }, options);
 
 
@@ -95,6 +106,23 @@
                 "hideFunction"  : settings["hideFunction"]
             });
 
+            ajaxValues = {
+                "enabled"           : settings["ajaxValues"].enabled,
+                "type"              : settings["ajaxValues"].type,
+                "loadingImageSrc"   : settings["ajaxValues"].loadingImageSrc,
+                "loadText"          : settings["ajaxValues"].loadText,
+                "ajaxLang"          : settings["ajaxValues"].ajaxLang,
+                "ajaxLangV"         : settings["ajaxValues"].ajaxLangV,
+                "ajaxReturn"        : settings["ajaxValues"].ajaxReturn,
+                "ajaxFunction"      : settings["ajaxValues"].ajaxFunction
+            }
+
+            /*Sprawdzamy czy ajax ma być aktywny*/
+            if(ajaxValues.enabled){
+               methods['initAjax'].apply(null, new Array(this, $dataBinder))
+               $dataBinder.data('divs', $("div[class*='"+  $dataBinder.data("class")+"']"));
+            }
+
             /*Wywołujemy schowanie wszystkich na początku*/
             methods['hideAll'].apply(null, new Array(null, $dataBinder));
 
@@ -111,6 +139,14 @@
                 var div = $("."+ $dataBinder.data('class')+'-'+liIndex);
                 /*Chowamy aktywne jeżeli są, przekazujemy w parametrze obiekt*/
                 methods['hideAll'].apply(null,new Array(div, $dataBinder));
+                /*Jeżeli jax to pobieramy dane*/
+                if(ajaxValues.enabled){
+                    /*Dodajemy wartość*/
+                    if(div.data("loaded") == undefined)
+                        div.data("loaded", false);
+
+                    methods['getAjaxData'].apply(null,new Array(div, $dataBinder, $this));
+                }
                 /*Sprawdzamy czy już nie jest schowane*/
                 if(div.is(":hidden")){
                     div[$dataBinder.data('startFunction')]($dataBinder.data('down'));
@@ -157,7 +193,68 @@
             });
             return false;
         },
-        initAjax: function(){ //TODO: Ajax implementation
+        initAjax: function(){
+            /*Pobieramy dane*/
+            var $this = $(arguments[0]);
+            var $data =  $(arguments[1]);
+            /*Sprawdzamy ile mamy w menu danych*/
+            li = $($this).children('ul').find("li a");
+            var counter = li.length;
+            /*Lista z divami do zwrotu*/
+            /*Tworzymy divy, dodajemy klasy i zwracamy funkcje*/
+            for(var  i = 0 ; i < counter ; i++){
+                var div = document.createElement('div');
+                $(div).addClass($data.data("class")+"-"+i);
+                $($this).append(div);
+            }
+        },
+        getAjaxData: function(){
+            var actual = $(arguments[0]);
+            var $data =  $(arguments[1]);
+            var $this =  $(arguments[2]);
+            var ajax_load = "<div class='slidepl-ajaxbar' '><p>"+ajaxValues.loadText+"</p><img src='"+ajaxValues.loadingImageSrc+"' alt='loading...' /></div>";
+            var link = $this.attr("href");
+
+               if((link !== '#') && (actual.data("loaded") == false)){
+
+                   if((ajaxValues.type == null || ajaxValues.type == 'load') ){
+                        actual.html(ajax_load).load(link , function(){
+                            actual.data("loaded", true);
+                        });
+                    }
+
+                   if(ajaxValues.type == 'post'){
+                       actual.html(ajax_load);
+                       $.get(
+                           link,
+                           {language: ajaxValues.ajaxLang, version: ajaxValues.ajaxLangV},
+                           function(responseText){
+                               actual.html(responseText);
+                           },
+                           ajaxValues.ajaxReturn
+
+                       );
+                   }
+
+                   if(ajaxValues.type == 'get'){
+                       actual.html(ajax_load);
+                       $.post(
+                           link,
+                           {language: ajaxValues.ajaxLang, version: ajaxValues.ajaxLangV},
+                           function(responseText){
+                               actual.html(responseText);
+                           },
+                           ajaxValues.ajaxReturn
+                       );
+
+                   }
+
+                   if(ajaxValues.type == 'ajax'){
+                       actual.html(ajax_load);
+                       ajaxValues.ajaxFunction();
+                   }
+            }
+
         }
     };
 
