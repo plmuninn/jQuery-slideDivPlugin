@@ -51,7 +51,7 @@
  *           'ajaxLang'              : 'php',                   //Jaki język ma być obsługiwany w zapytaniu
  *           'ajaxLangV'             : 5,                       //Wersja języka
  *           'ajaxReturn'            : 'xml',                   //Sposób generowania danych
- *           'ajaxFunction'          : function(){},            //Możliwość zaimplementowania własnej funkcji ajax (type musi być ajax)
+ *           'ajaxFunction'          : function(ajaxValues container, liElement){},      //Możliwość zaimplementowania własnej funkcji ajax (type musi być ajax)
  *           'loadedAjaxFunction'    : function(responseText, container, liElement){    //Funkcja transformacji danych ściągniętych przez ajaxa:
  *                                       return $("body",responseText);                 //container -> div gdzie zostanie wydrukowana odpowiedź
  *                                       }                                              //liElement -> element na którym zostało wykonane zapytanie
@@ -96,7 +96,7 @@
                     'ajaxLang'              : 'php',
                     'ajaxLangV'             : 5,
                     'ajaxReturn'            : 'xml',
-                    'ajaxFunction'          : function(){},
+                    'ajaxFunction'          : function(ajaxValues, container, liElement){},
                     'loadedAjaxFunction'    : function(responseText, container, liElement){
                         return $("body",responseText);
                     }
@@ -269,7 +269,7 @@
                         link,
                         {language: ajaxValues[0].ajaxLang, version: ajaxValues[0].ajaxLangV},
                         function(responseText){
-                            var valueToAdd = ajaxValues[0].loadedAjaxFunction(responseText, actual, $this);
+                            var valueToAdd = ajaxValues[0].loadedAjaxFunction.call(this,responseText, actual, $this);
 
                             actual.html(valueToAdd);
                         },
@@ -283,7 +283,7 @@
                         link,
                         {language: ajaxValues[0].ajaxLang, version: ajaxValues[0].ajaxLangV},
                         function(responseText){
-                            var valueToAdd = ajaxValues[0].loadedAjaxFunction(responseText);
+                            var valueToAdd = ajaxValues[0].loadedAjaxFunction.call(this,responseText, actual, $this);
                             actual.html(valueToAdd);
                         },
                         ajaxValues[0].ajaxReturn
@@ -292,7 +292,7 @@
 
                 if(ajaxValues[0].type == 'ajax'){
                     actual.html(ajax_load);
-                    ajaxValues[0].ajaxFunction();
+                    ajaxValues[0].ajaxFunction.call(this,ajaxValues, actual, $this);
                 }
             }
 
