@@ -46,7 +46,21 @@ A simple jQuery plugin to toogle hidden div contents.
      'initFunction'   : 'click',     //Showing start event
      'startFunction'  : 'slideDown', //Show effect
      'endFunction'    : 'slideUp',   //Hide effect
-     'hideFunction'   : 'hide'       //Automatic hide effect
+     'hideFunction'   : 'hide',       //Automatic hide effect
+              'ajaxValues'    : {                                   //Ajax object with configuration
+                 'enabled'               : false,                   //If ajax is enabled
+                 'type'                  : null,                    //Type of ajax method ( {null | loading},post,get,ajax), if {null | loading} you can show in a->href witch element should be show "index.html .body" else you should use loadedAjaxFunction
+                 'automaticLoading'      : false,                   //If ajax should init after initFunction
+                 'loadingImageSrc'       : 'img/ajax-loader.gif',   //Path to loadImage
+                 'loadText'              : 'Loading',               //Loading text
+                 'ajaxLang'              : 'php',                   //Which type of language
+                 'ajaxLangV'             : 5,                       //Which version of language
+                 'ajaxReturn'            : 'xml',                   //Return type value
+                 'ajaxFunction'          : function(){},            //If you won't own ajax function (type must be ajax)
+                 'loadedAjaxFunction'    : function(responseText, container, liElement){    //Method to transformation respond from ajax:
+                                             return $("body",responseText);                 //container -> div where will be print respond
+                                             }                                              //liElement -> li element when was activate ajax
+                }
   });
  </code>
  </pre>

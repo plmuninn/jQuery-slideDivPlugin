@@ -41,7 +41,21 @@
  *    'initFunction'    : 'click',     //Zdarzenie które ma rozpocząć aktywację funkcji pokazywania
  *    'startFunction'   : 'slideDown', //Efekt pokazywania
  *    'endFunction'     : 'slideUp',   //Efekt chowania
- *    'hideFunction'    : 'hide'       //Efekt automatycznego chowania
+ *    'hideFunction'    : 'hide',       //Efekt automatycznego chowania
+ *        'ajaxValues'    : {                                   //Obiekt z wartościami do obsługi ajaxa
+ *           'enabled'               : false,                   //Czy ma być aktwyny ajax
+ *           'type'                  : null,                    //Jaki typ zapytania ( {null | loading},post,get,ajax), jeżeli {null | loading} w linku można podać klasę diva do odczytania np "index.html .body" inaczej proszę skorzystać z loadedAjaxFunction
+ *           'automaticLoading'      : false,                   //Czy ajax ma pobrać dane za nim zostanie aktywowany initFunction
+ *           'loadingImageSrc'       : 'img/ajax-loader.gif',   //Ścieżka do pliku z obrazkiem ajax-loader
+ *           'loadText'              : 'Loading',               //Text dotyczący wczytywania
+ *           'ajaxLang'              : 'php',                   //Jaki język ma być obsługiwany w zapytaniu
+ *           'ajaxLangV'             : 5,                       //Wersja języka
+ *           'ajaxReturn'            : 'xml',                   //Sposób generowania danych
+ *           'ajaxFunction'          : function(){},            //Możliwość zaimplementowania własnej funkcji ajax (type musi być ajax)
+ *           'loadedAjaxFunction'    : function(responseText, container, liElement){    //Funkcja transformacji danych ściągniętych przez ajaxa:
+ *                                       return $("body",responseText);                 //container -> div gdzie zostanie wydrukowana odpowiedź
+ *                                       }                                              //liElement -> element na którym zostało wykonane zapytanie
+ *          }
  * });
  *
  * Struktrua JavaScript skrócona
@@ -74,14 +88,18 @@
                 'endFunction'   : 'slideUp',
                 'hideFunction'  : 'hide',
                 'ajaxValues'    : {
-                    'enabled'           : false,
-                    'type'              : null,
-                    'loadingImageSrc'   : 'img/ajax-loader.gif',
-                    'loadText'          : 'Loading',
-                    'ajaxLang'          : 'php',
-                    'ajaxLangV'         : 5,
-                    'ajaxReturn'        : 'html',
-                    'ajaxFunction'      : function(){}
+                    'enabled'               : false,
+                    'type'                  : null,
+                    'automaticLoading'      : false,
+                    'loadingImageSrc'       : 'img/ajax-loader.gif',
+                    'loadText'              : 'Loading',
+                    'ajaxLang'              : 'php',
+                    'ajaxLangV'             : 5,
+                    'ajaxReturn'            : 'xml',
+                    'ajaxFunction'          : function(){},
+                    'loadedAjaxFunction'    : function(responseText, container, liElement){
+                        return $("body",responseText);
+                    }
                 }
             }, options);
 
@@ -106,21 +124,23 @@
                 "hideFunction"  : settings["hideFunction"]
             });
 
-            ajaxValues = {
-                "enabled"           : settings["ajaxValues"].enabled,
-                "type"              : settings["ajaxValues"].type,
-                "loadingImageSrc"   : settings["ajaxValues"].loadingImageSrc,
-                "loadText"          : settings["ajaxValues"].loadText,
-                "ajaxLang"          : settings["ajaxValues"].ajaxLang,
-                "ajaxLangV"         : settings["ajaxValues"].ajaxLangV,
-                "ajaxReturn"        : settings["ajaxValues"].ajaxReturn,
-                "ajaxFunction"      : settings["ajaxValues"].ajaxFunction
+            var ajaxValues = {
+                "enabled"               : settings["ajaxValues"].enabled,
+                "type"                  : settings["ajaxValues"].type,
+                "automaticLoading"      : settings["ajaxValues"].automaticLoading,
+                "loadingImageSrc"       : settings["ajaxValues"].loadingImageSrc,
+                "loadText"              : settings["ajaxValues"].loadText,
+                "ajaxLang"              : settings["ajaxValues"].ajaxLang,
+                "ajaxLangV"             : settings["ajaxValues"].ajaxLangV,
+                "ajaxReturn"            : settings["ajaxValues"].ajaxReturn,
+                "ajaxFunction"          : settings["ajaxValues"].ajaxFunction,
+                "loadedAjaxFunction"    : settings["ajaxValues"].loadedAjaxFunction
             }
 
             /*Sprawdzamy czy ajax ma być aktywny*/
             if(ajaxValues.enabled){
-               methods['initAjax'].apply(null, new Array(this, $dataBinder))
-               $dataBinder.data('divs', $("div[class*='"+  $dataBinder.data("class")+"']"));
+                methods['initAjax'].apply(null, new Array(this, $dataBinder, ajaxValues))
+                $dataBinder.data('divs', $("div[class*='"+  $dataBinder.data("class")+"']"));
             }
 
             /*Wywołujemy schowanie wszystkich na początku*/
@@ -144,8 +164,7 @@
                     /*Dodajemy wartość*/
                     if(div.data("loaded") == undefined)
                         div.data("loaded", false);
-
-                    methods['getAjaxData'].apply(null,new Array(div, $dataBinder, $this));
+                    methods['getAjaxData'].apply(null,new Array(div, $dataBinder, $this, ajaxValues));
                 }
                 /*Sprawdzamy czy już nie jest schowane*/
                 if(div.is(":hidden")){
@@ -197,6 +216,7 @@
             /*Pobieramy dane*/
             var $this = $(arguments[0]);
             var $data =  $(arguments[1]);
+            var ajaxValues = $(arguments[2]);
             /*Sprawdzamy ile mamy w menu danych*/
             li = $($this).children('ul').find("li a");
             var counter = li.length;
@@ -204,55 +224,76 @@
             /*Tworzymy divy, dodajemy klasy i zwracamy funkcje*/
             for(var  i = 0 ; i < counter ; i++){
                 var div = document.createElement('div');
-                $(div).addClass($data.data("class")+"-"+i);
-                $($this).append(div);
+                if($("."+$data.data("class")+"-"+i).length <= 0){
+                    $(div).addClass($data.data("class")+"-"+i);
+                    $($this).append(div);
+                }
             }
+            /*Automatic Ajax Loading*/
+            if(ajaxValues[0].automaticLoading){
+                li.each(function(){
+                    var $this = $(this);
+                    var liIndex = $this.parent().index();
+                    var div = $("."+ $data.data('class')+'-'+liIndex);
+
+                    if(div.data("loaded") == undefined)
+                        div.data("loaded", false);
+
+                    methods['getAjaxData'].apply(null,new Array(div, $data, $this, ajaxValues[0]));
+                })
+            }
+
         },
         getAjaxData: function(){
+            /*Pobieramy dane*/
             var actual = $(arguments[0]);
             var $data =  $(arguments[1]);
             var $this =  $(arguments[2]);
-            var ajax_load = "<div class='slidepl-ajaxbar' '><p>"+ajaxValues.loadText+"</p><img src='"+ajaxValues.loadingImageSrc+"' alt='loading...' /></div>";
+            var ajaxValues = $(arguments[3]);
+            /*Tworzymy znaczek wczytywania*/
+            var ajax_load = "<div class='slidepl-ajaxbar' '><p>"+ajaxValues[0].loadText+"</p><img src='"+ajaxValues[0].loadingImageSrc+"' alt='Loading' title='Loading' /></div>";
+            /*Generujemy lonk*/
             var link = $this.attr("href");
+            /*Sprawdzamy wartości czy mamy co wczytywać*/
+            if((link !== '#') && (actual.data("loaded") == false)){
 
-               if((link !== '#') && (actual.data("loaded") == false)){
+                if((ajaxValues[0].type == null || ajaxValues[0].type == 'load') ){
+                    actual.html(ajax_load).load(link , function(){
+                        actual.data("loaded", true);
+                    });
+                }
 
-                   if((ajaxValues.type == null || ajaxValues.type == 'load') ){
-                        actual.html(ajax_load).load(link , function(){
-                            actual.data("loaded", true);
-                        });
-                    }
+                if(ajaxValues[0].type == 'get'){
+                    actual.html(ajax_load);
+                    $.get(
+                        link,
+                        {language: ajaxValues[0].ajaxLang, version: ajaxValues[0].ajaxLangV},
+                        function(responseText){
+                            var valueToAdd = ajaxValues[0].loadedAjaxFunction(responseText, actual, $this);
 
-                   if(ajaxValues.type == 'post'){
-                       actual.html(ajax_load);
-                       $.get(
-                           link,
-                           {language: ajaxValues.ajaxLang, version: ajaxValues.ajaxLangV},
-                           function(responseText){
-                               actual.html(responseText);
-                           },
-                           ajaxValues.ajaxReturn
+                            actual.html(valueToAdd);
+                        },
+                        ajaxValues[0].ajaxReturn
+                    );
+                }
 
-                       );
-                   }
+                if(ajaxValues[0].type == 'post'){
+                    actual.html(ajax_load);
+                    $.post(
+                        link,
+                        {language: ajaxValues[0].ajaxLang, version: ajaxValues[0].ajaxLangV},
+                        function(responseText){
+                            var valueToAdd = ajaxValues[0].loadedAjaxFunction(responseText);
+                            actual.html(valueToAdd);
+                        },
+                        ajaxValues[0].ajaxReturn
+                    );
+                }
 
-                   if(ajaxValues.type == 'get'){
-                       actual.html(ajax_load);
-                       $.post(
-                           link,
-                           {language: ajaxValues.ajaxLang, version: ajaxValues.ajaxLangV},
-                           function(responseText){
-                               actual.html(responseText);
-                           },
-                           ajaxValues.ajaxReturn
-                       );
-
-                   }
-
-                   if(ajaxValues.type == 'ajax'){
-                       actual.html(ajax_load);
-                       ajaxValues.ajaxFunction();
-                   }
+                if(ajaxValues[0].type == 'ajax'){
+                    actual.html(ajax_load);
+                    ajaxValues[0].ajaxFunction();
+                }
             }
 
         }

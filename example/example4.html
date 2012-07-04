@@ -11,7 +11,8 @@
          $(".menu-class").slideDivs({
              ajaxValues    : {
                  enabled : true,
-                 type : "post"
+                 type : "get",
+                 automaticLoading: true
              }
          });
         });
@@ -20,10 +21,12 @@
 <body>
   <div class="menu-class">
       <ul>
-          <li><a href="index.html .body">Our content will hide after : 5000 ms because we have <strong> auto: true & autoTime: 5000</strong></a></li>
+          <li><a href="index.html">Our content will hide after : 5000 ms because we have <strong> auto: true & autoTime: 5000</strong></a></li>
           <li><a href="#">Our content will hide after : 5000 ms because we have <strong> auto: true & autoTime: 5000</strong></a></li>
           <li><a href="#">Our content will hide after : 5000 ms because we have <strong> auto: true & autoTime: 5000</strong></a></li>
       </ul>
+      <div class="sliderDiv-1"><p>Slider1</p></div>
+      <div class="sliderDiv-2"><p>Slider2</p></div>
   </div>
 
 </body>
