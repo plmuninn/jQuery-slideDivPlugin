@@ -6,63 +6,6 @@
  * OneWebPro http://onewebpro.pl/
  * git://github.com/OneWebPro/jQuery-slideDivPlugin.git
  */
-
-/*Szybkie API
- * Struktura html Menu
- * <div class="Klasa">
- * <ul>
- * <li><a href="#">link</a></li>
- * <li><a href="#">link2</a></li>
- * <li><a href="#">link3</a></li>
- * </ul>
- *
- * Struktura Divów
- * <div class="sliderDiv-0">
- * Tekst
- * </div>
- * <div class="sliderDiv-1">
- * Tekst
- * </div>
- * <div class="sliderDiv-2">
- * Tekst
- * </div>
- * </div>
- *
- * Struktrua JavaScript rozszerzona
- * $(".Klasa").slideDivs({
- *    'up'              :  10,         //Sposób chowania się, niski czas daje efekt znikania
- *    'down'            : 'slow',      //Sposób pojawiania się
- *    'class'           : 'sliderDiv', //Klasa divów do pojawiania się
- *    'first'           : true,        //Czy ma być wywołany pierwszy element po inicjalizacji
- *    'doubleClick'     : false,       //Czy ma być wyłączane menu kliknięciem w ten sam link
- *    'hideChild'       : false,       //Czy mają się chować podrzędne wywołania
- *    'auto'            : false,       //Czy div ma się chować automatycznie
- *    'autoTime'        : 5000         //Po jakim czasie ma się schować po kliknięciu
- *    'initFunction'    : 'click',     //Zdarzenie które ma rozpocząć aktywację funkcji pokazywania
- *    'startFunction'   : 'slideDown', //Efekt pokazywania
- *    'endFunction'     : 'slideUp',   //Efekt chowania
- *    'hideFunction'    : 'hide',       //Efekt automatycznego chowania
- *        'ajaxValues'    : {                                   //Obiekt z wartościami do obsługi ajaxa
- *           'enabled'               : false,                   //Czy ma być aktwyny ajax
- *           'type'                  : null,                    //Jaki typ zapytania ( {null | loading},post,get,ajax), jeżeli {null | loading} w linku można podać klasę diva do odczytania np "index.html .body" inaczej proszę skorzystać z loadedAjaxFunction
- *           'automaticLoading'      : false,                   //Czy ajax ma pobrać dane za nim zostanie aktywowany initFunction
- *           'loadingImageSrc'       : 'img/ajax-loader.gif',   //Ścieżka do pliku z obrazkiem ajax-loader
- *           'loadText'              : 'Loading',               //Text dotyczący wczytywania
- *           'ajaxLang'              : 'php',                   //Jaki język ma być obsługiwany w zapytaniu
- *           'ajaxLangV'             : 5,                       //Wersja języka
- *           'ajaxReturn'            : 'xml',                   //Sposób generowania danych
- *           'ajaxFunction'          : function(ajaxValues container, liElement){},      //Możliwość zaimplementowania własnej funkcji ajax (type musi być ajax)
- *           'loadedAjaxFunction'    : function(responseText, container, liElement){    //Funkcja transformacji danych ściągniętych przez ajaxa:
- *                                       return $("body",responseText);                 //container -> div gdzie zostanie wydrukowana odpowiedź
- *                                       }                                              //liElement -> element na którym zostało wykonane zapytanie
- *          }
- * });
- *
- * Struktrua JavaScript skrócona
- * $(".Klasa").slideDivs();
- *
- * */
-
 (function( $ ){
 
     var settings;
@@ -100,7 +43,17 @@
                     'loadedAjaxFunction'    : function(responseText, container, liElement){
                         return $("body",responseText);
                     }
-                }
+                },
+                'beforeInit'     : function(){},
+                'afterInit'      : function(){},
+                'onInit'         : function(){},
+                'afterHide'      : function(){},
+                'beforeHide'     : function(){},
+                'onHide'         : function(){},
+                'afterAjaxInit'  : function(){},
+                'beforeAjaxInit' : function(){},
+                'afterAjax'      : function(){},
+                'beforeAjax'     : function(){}
             }, options);
 
 
@@ -109,19 +62,29 @@
 
             /*Pobieramy danę i zapisujemy do aktualnej instancji obiektu*/
             var $dataBinder = $(this).data({
-                "up"            : settings["up"],
-                "down"          : settings["down"],
-                "class"         : settings["class"],
-                "first"         : settings["first"],
-                "divs"          : $("div[class*='"+ settings["class"]+"']"),
-                "doubleClick"   : settings["doubleClick"],
-                "hideChild"     : settings["hideChild"],
-                "auto"          : settings["auto"],
-                "autoTime"      : settings["autoTime"],
-                "initFunction"  : settings["initFunction"],
-                "startFunction" : settings["startFunction"],
-                "endFunction"   : settings["endFunction"],
-                "hideFunction"  : settings["hideFunction"]
+                "up"                : settings["up"],
+                "down"              : settings["down"],
+                "class"             : settings["class"],
+                "first"             : settings["first"],
+                "divs"              : $("div[class*='"+ settings["class"]+"']"),
+                "doubleClick"       : settings["doubleClick"],
+                "hideChild"         : settings["hideChild"],
+                "auto"              : settings["auto"],
+                "autoTime"          : settings["autoTime"],
+                "initFunction"      : settings["initFunction"],
+                "startFunction"     : settings["startFunction"],
+                "endFunction"       : settings["endFunction"],
+                "hideFunction"      : settings["hideFunction"],
+                "beforeInit"        : settings["beforeInit"],
+                "afterInit"         : settings["afterInit"],
+                "onInit"            : settings["onInit"],
+                "afterHide"         : settings["afterHide"],
+                "beforeHide"        : settings["beforeHide"],
+                "onHide"            : settings["onHide"],
+                "afterAjaxInit"     : settings["afterAjaxInit"],
+                "beforeAjaxInit"    : settings["beforeAjaxInit"],
+                "afterAjax"         : settings["afterAjax"],
+                "beforeAjax"        : settings["beforeAjax"]
             });
 
             var ajaxValues = {
@@ -135,8 +98,9 @@
                 "ajaxReturn"            : settings["ajaxValues"].ajaxReturn,
                 "ajaxFunction"          : settings["ajaxValues"].ajaxFunction,
                 "loadedAjaxFunction"    : settings["ajaxValues"].loadedAjaxFunction
-            }
+            };
 
+            [$dataBinder.data('beforeInit').call()];
             /*Sprawdzamy czy ajax ma być aktywny*/
             if(ajaxValues.enabled){
                 methods['initAjax'].apply(null, new Array(this, $dataBinder, ajaxValues))
@@ -147,8 +111,10 @@
             methods['hideAll'].apply(null, new Array(null, $dataBinder));
 
 
+
             /*Ściągamy wszysto z wyliczenia*/
             li = $(this).children('ul').find("li a")[$dataBinder.data('initFunction')](function(event){
+                [$dataBinder.data('onInit').call()];
                 /*Blokujemy wykonanie linku*/
                 event.preventDefault();
                 /*Przesłaniamy obiekt*/
@@ -175,22 +141,22 @@
                 }
                 /*Aby strona nie "skakała"*/
                 return false;
-            });
+            })[$dataBinder.data('afterInit').call()];
             /*Wyświetlamy pierwszy jeżeli mamy True*/
             if($dataBinder.data("first")){
                 $("."+$dataBinder.data('class')+'-0')[$dataBinder.data('endFunction')]($dataBinder.data('down'));
             }
-
             return false;
         },
         hideAll : function (){
             /*Pobieramy parametr z divem*/
             var actual = $(arguments[0]);
             var $data =  $(arguments[1]);
+            [$data.data('beforeHide').call()];
             /*Listujemy wszystkie divy*/
             $data.data("divs").each(function(){
                 var $this = $(this);
-
+                [$data.data('onHide').call()];
                 /*Chowamy dzieci*/
                 if($data.data('hideChild')){
                     $this.parent().find(".divSlider").children('div').hide(1);
@@ -210,6 +176,7 @@
                     }
                 }
             });
+            [$data.data('afterHide').call()];
             return false;
         },
         initAjax: function(){
@@ -217,6 +184,7 @@
             var $this = $(arguments[0]);
             var $data =  $(arguments[1]);
             var ajaxValues = $(arguments[2]);
+            [$data.data('beforeAjaxInit').call()];
             /*Sprawdzamy ile mamy w menu danych*/
             li = $($this).children('ul').find("li a");
             var counter = li.length;
@@ -242,7 +210,7 @@
                     methods['getAjaxData'].apply(null,new Array(div, $data, $this, ajaxValues[0]));
                 })
             }
-
+            [$data.data('afterAjaxInit').call()];
         },
         getAjaxData: function(){
             /*Pobieramy dane*/
@@ -250,6 +218,7 @@
             var $data =  $(arguments[1]);
             var $this =  $(arguments[2]);
             var ajaxValues = $(arguments[3]);
+            [$data.data('beforeAjax').call()];
             /*Tworzymy znaczek wczytywania*/
             var ajax_load = "<div class='slidepl-ajaxbar' '><p>"+ajaxValues[0].loadText+"</p><img src='"+ajaxValues[0].loadingImageSrc+"' alt='Loading' title='Loading' /></div>";
             /*Generujemy lonk*/
@@ -295,6 +264,7 @@
                     ajaxValues[0].ajaxFunction.call(this,ajaxValues, actual, $this);
                 }
             }
+            [$data.data('afterAjax').call()];
         }
     };
 
