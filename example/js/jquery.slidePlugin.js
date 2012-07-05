@@ -5,6 +5,7 @@
  * Time: 08:26
  * OneWebPro http://onewebpro.pl/
  * git://github.com/OneWebPro/jQuery-slideDivPlugin.git
+ * Version : 1.0
  */
 (function( $ ){
 

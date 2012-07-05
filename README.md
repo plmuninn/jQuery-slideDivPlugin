@@ -1,4 +1,4 @@
-jQuery SlideDiv Plugin
+jQuery SlideDiv Plugin v 1.0
 ======
 Simple implementation
 ---
