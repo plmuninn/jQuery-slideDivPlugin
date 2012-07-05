@@ -147,7 +147,8 @@ Extended implementation of standard options example:
 ```
 Ajax implementation
 ===
-Plugin have a new ajax implementation. Ja ca use it with normal contents. Html example:
+Plugin have a new ajax implementation. Ja ca use it with normal contents. If we won't use ajax link must different then "#".
+And we don't have to create div for it (we cun, just we don't must). Html example:
 Html
 ---
 ```html
