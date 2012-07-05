@@ -1,5 +1,7 @@
 jQuery SlideDiv Plugin
 ======
+Simple implementation
+---
 Html implementation
 ----
 ```html
@@ -21,3 +23,10 @@ Html implementation
             </div>
 </div>
 ```
+Javascript
+---
+```js
+ $(".ClassName").slideDivs();
+```
+Arguments
+=====
