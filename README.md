@@ -28,19 +28,29 @@ Javascript
 ```js
  $(".ClassName").slideDivs();
 ```
-Arguments
+Standard Options
 =====
-```js
-                'up'            :  10,
-                'down'          : 'slow',
-                'class'         : 'sliderDiv',
-                'first'         : false,
-                'doubleClick'   : false,
-                'hideChild'     : false,
-                'auto'          : false,
-                'autoTime'      : 5000,
-                'initFunction'  : 'click',
-                'startFunction' : 'slideDown',
-                'endFunction'   : 'slideUp',
-                'hideFunction'  : 'hide',
-```
+### 'up'
+:  10,
+### 'down'
+: 'slow',
+### 'class'
+: 'sliderDiv',
+### 'first'
+: false,
+### 'doubleClick'
+: false,
+### 'hideChild'
+: false,
+### 'auto'
+: false,
+### 'autoTime'
+: 5000,
+### 'initFunction'
+: 'click',
+###  'startFunction'
+: 'slideDown',
+### 'endFunction'
+: 'slideUp',
+### 'hideFunction'
+: 'hide',
