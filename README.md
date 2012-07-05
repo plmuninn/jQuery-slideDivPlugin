@@ -274,11 +274,11 @@ liElement is element of list which activate function.
 ```js
      $(".ClassName").slideDivs({
              ajaxValues    : {
-                 ajaxFunction : function(ajaxValues, container, liElement){//nothing}
+                 ajaxFunction : function(ajaxValues, container, liElement){ /*nothing*/ }
              }
          });
 ```
-Default function(ajaxValues, container, liElement){//nothing} .
+Default function(ajaxValues, container, liElement){ /*nothing*/ } .
 ###loadedAjaxFunction
 This function is displaying data on container. For 'post' and 'get' type.
 responseText is returned value.
