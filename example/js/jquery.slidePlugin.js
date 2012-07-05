@@ -42,7 +42,7 @@
                     'ajaxReturn'            : 'xml',
                     'ajaxFunction'          : function(ajaxValues, container, liElement){},
                     'loadedAjaxFunction'    : function(responseText, container, liElement){
-                        return $("body",responseText);
+                        return $(".content",responseText);
                     }
                 },
                 'beforeInit'     : function(){},
@@ -145,7 +145,7 @@
             })[$dataBinder.data('afterInit').call()];
             /*Wyświetlamy pierwszy jeżeli mamy True*/
             if($dataBinder.data("first")){
-                $("."+$dataBinder.data('class')+'-0')[$dataBinder.data('endFunction')]($dataBinder.data('down'));
+                $("."+$dataBinder.data('class')+'-0')[$dataBinder.data('startFunction')]($dataBinder.data('down'));
             }
             return false;
         },

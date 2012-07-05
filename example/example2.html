@@ -10,18 +10,17 @@
         $(document).ready(function(){
 
             $(".menu-class").slideDivs({
-                  'first': true,
-                  'hideChild'   : true
+                  'first': true
              });
 
              $(".second").slideDivs({
                     'class' : 'slideDiv',
-                    'doubleClick' : true,
-                    'hideChild'   : true
+                    'doubleClick' : true
              });
 
             $(".slideDiv-0").slideDivs({
-                'class' : 'third'
+                'class' : 'third',
+                'hideChild'   : true
             });
 
             $(".third-0").slideDivs({
@@ -32,6 +31,12 @@
     </script>
 </head>
 <body>
+<div class="body">
+    <a href="http://onewebpro.pl/" target="_blank"><img src="img/onewebpro.png" title="OneWebPro" name="Logo" /></a>
+    <div class="content">
+        <ul>
+            <li><a href="#" onClick="parent.history.back(); return false;">Back</a></li>
+        </ul>
   <div class="menu-class">
       <ul>
           <li><a href="#">First</a></li>
@@ -79,7 +84,7 @@
           <p>Curabitur varius malesuada turpis, ac aliquet purus ornare volutpat. Ut fermentum euismod nisl at sodales. Sed dui magna, bibendum at dictum quis, imperdiet ut nisl. Etiam bibendum ultricies hendrerit. Quisque in sapien eu nunc feugiat rhoncus.</p>
       </div>
   </div>
-
-
+ </div>
+</div>
 </body>
 </html>
