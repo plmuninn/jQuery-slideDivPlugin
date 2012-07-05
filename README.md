@@ -30,27 +30,37 @@ Javascript
 ```
 Standard Options
 =====
-### 'up'
-:  10,
-### 'down'
-: 'slow',
-### 'class'
-: 'sliderDiv',
-### 'first'
-: false,
-### 'doubleClick'
-: false,
-### 'hideChild'
-: false,
-### 'auto'
-: false,
-### 'autoTime'
-: 5000,
-### 'initFunction'
-: 'click',
-###  'startFunction'
-: 'slideDown',
-### 'endFunction'
-: 'slideUp',
-### 'hideFunction'
-: 'hide',
+### up
+Time for showing. You can use miliseconds or 'slow','fast' expressions. Ex:
+```js
+   $(".ClassName").slideDivs({
+        up : 10
+   });
+```
+Default: 10 .
+### down
+Time fo hiding. You can use miliseconds or 'slow','fast' expressions. Ex:
+### class
+```js
+   $(".ClassName").slideDivs({
+        down : 'slow'
+   });
+```
+Default 'slow' .
+### first
+
+### doubleClick
+
+### hideChild
+
+### auto
+
+### autoTime
+
+### initFunction
+
+### startFunction
+
+### endFunction
+
+### hideFunction
