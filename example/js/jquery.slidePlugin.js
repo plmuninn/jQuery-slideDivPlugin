@@ -104,7 +104,7 @@
             [$dataBinder.data('beforeInit').call()];
             /*Sprawdzamy czy ajax ma być aktywny*/
             if(ajaxValues.enabled){
-                methods['initAjax'].apply(null, new Array(this, $dataBinder, ajaxValues))
+                methods['initAjax'].apply(null, new Array(this, $dataBinder, ajaxValues));
                 $dataBinder.data('divs', $("div[class*='"+  $dataBinder.data("class")+"']"));
             }
 
