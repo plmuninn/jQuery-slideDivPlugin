@@ -236,7 +236,7 @@ Loading text to display.  It shows when function is loading content.
 ```
 Default "Loading" .
 ###ajaxLang
-Ajax language type. For 'get' and 'post' type of connections. More <a href="http://api.jquery.com/jQuery.get/">jQuery Documentation get</a> and  <a href="http://api.jquery.com/jQuery.post/">jQuery Documentation post</a>
+Ajax language type. For 'get' and 'post' type of connections. More <a href="http://api.jquery.com/jQuery.get/" target="_blank">jQuery Documentation get</a> and  <a href="http://api.jquery.com/jQuery.post/" target="_blank">jQuery Documentation post</a>
 ```js
      $(".ClassName").slideDivs({
              ajaxValues    : {
@@ -246,7 +246,7 @@ Ajax language type. For 'get' and 'post' type of connections. More <a href="http
 ```
 Default 'php' .
 ###ajaxLangV
-Ajax language version. For 'get' and 'post' type of connections. More <a href="http://api.jquery.com/jQuery.get/">jQuery Documentation get</a> and  <a href="http://api.jquery.com/jQuery.post/">jQuery Documentation post</a>
+Ajax language version. For 'get' and 'post' type of connections. More <a href="http://api.jquery.com/jQuery.get/" target="_blank">jQuery Documentation get</a> and  <a href="http://api.jquery.com/jQuery.post/" target="_blank">jQuery Documentation post</a>
 ```js
      $(".ClassName").slideDivs({
              ajaxValues    : {
@@ -256,7 +256,7 @@ Ajax language version. For 'get' and 'post' type of connections. More <a href="h
 ```
 Default 5 .
 ###ajaxReturn
-Ajax return data type. For 'get' and 'post' type of connections. More <a href="http://api.jquery.com/jQuery.get/">jQuery Documentation get</a> and  <a href="http://api.jquery.com/jQuery.post/">jQuery Documentation post</a>
+Ajax return data type. For 'get' and 'post' type of connections. More <a href="http://api.jquery.com/jQuery.get/" target="_blank">jQuery Documentation get</a> and  <a href="http://api.jquery.com/jQuery.post/" target="_blank">jQuery Documentation post</a>
 ```js
      $(".ClassName").slideDivs({
              ajaxValues    : {
