@@ -1,6 +1,6 @@
 jQuery SlideDiv Plugin v 1.0
-<a href="http://zdjecia.loki.iswift.eu/github/" target="_blank">Demo page</a>
 ======
+<a href="http://zdjecia.loki.iswift.eu/github/" target="_blank">Demo page</a>
 Simple implementation
 ---
 Html
