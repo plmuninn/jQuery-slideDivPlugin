@@ -108,10 +108,10 @@ Function to initliaze showing event. You can use all jQuery library standard met
 Function to showing divs. You can use all jQuery library standard methods ('slideDown','show' etc.) Ex:
  ```js
     $(".ClassName").slideDivs({
-         startFunction: 'slideDown'
+         startFunction: 'fadeIn'
     });
  ```
-Default 'slideDown'.
+Default 'fadeIn'.
 ### endFunction
  Function to hiding divs. You can use all jQuery library standard methods ('slideUp','hide' etc.) Ex:
   ```js

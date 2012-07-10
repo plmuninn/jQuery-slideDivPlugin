@@ -28,7 +28,7 @@
                 'auto'          : false,
                 'autoTime'      : 5000,
                 'initFunction'  : 'click',
-                'startFunction' : 'slideDown',
+                'startFunction' : 'fadeIn',
                 'endFunction'   : 'slideUp',
                 'hideFunction'  : 'hide',
                 'ajaxValues'    : {
